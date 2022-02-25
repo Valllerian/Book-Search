@@ -4,6 +4,9 @@ const { AuthenticationError } = require("apollo-server-express");
 const { signToken } = require("../utils/auth");
 
 const resolvers = {
+
+// ==================================== QUERIES: 
+
   // getMe that returns only info about current user
   Query: {
     getMe: async (parent, args, context) => {
@@ -17,18 +20,24 @@ const resolvers = {
           console.log(err);
         }
       }
-      throw new AuthenticationError("You need to be logged in!");
+      throw new AuthenticationError("Please, log in first");
     },
   },
 
+// ==================================== MUTATIONS: 
+
   Mutation: {
-   // CREATE USER
-   createUser: async (parent, { email, password }) => {
-    const user = await User.create({ email, password });
-    const token = signToken(user);
-    return { token, user };
-  },
+
+    // CREATE USER
+
+    createUser: async (parent, { email, password }) => {
+      const user = await User.create({ email, password });
+      const token = signToken(user);
+      return { token, user };
+    },
+
     // LOGIN USER
+
     login: async (parent, { email, password }) => {
       const user = await User.findOne({ email });
 
@@ -45,6 +54,34 @@ const resolvers = {
       const token = signToken(user);
 
       return { token, user };
+    },
+
+    // SAVE BOOK
+
+    saveBook: async (parent, { bookData }, context) => {
+      if (context.user) {
+        const updatedUser = await User.findByIdAndUpdate(
+          { _id: context.user._id },
+          { $push: { savedBooks: bookData } },
+          { new: true }
+        );
+        return updatedUser;
+      }
+      throw new AuthenticationError("Please, log in first");
+    },
+
+    // DELETE BOOK
+
+    deleteBook: async (parent, { bookId }, context) => {
+      if (context.user) {
+        const updatedUser = await User.findOneAndUpdate(
+          { _id: context.user._id },
+          { $pull: { savedBooks: { bookId } } },
+          { new: true }
+        );
+        return updatedUser;
+      }
+      throw new AuthenticationError("Please, log in first");
     },
   },
 };
