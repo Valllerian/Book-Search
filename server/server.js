@@ -6,7 +6,7 @@ const db = require('./config/connection');
 const { ApolloServer } = require('apollo-server-express');
 
 // TypeDefs and Resolvers for schema
-const { typeDefs, resolvers } = require('./schemas');
+const { resolvers, typeDefs } = require('./schemas');
 
 const { authMiddleware } = require("./utils/auth");
 
