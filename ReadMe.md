@@ -94,5 +94,3 @@ This app was developed on top of the starter code.
 Heroku documentation:
 https://devcenter.heroku.com/articles/getting-started-with-nodejs?singlepage=true
 
-Express documentation:
-https://expressjs.com/en/starter/generator.html

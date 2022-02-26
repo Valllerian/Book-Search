@@ -1,7 +1,5 @@
 const { gql } = require("apollo-server-express");
 
-// ! means the line is required.
-
 const typeDefs = gql`
   type User {
     _id: ID!
