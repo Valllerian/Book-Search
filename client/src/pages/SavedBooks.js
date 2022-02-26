@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import {
   Jumbotron,
   Container,
@@ -8,8 +8,7 @@ import {
 } from "react-bootstrap";
 
 import Auth from "../utils/auth";
-import { removeBookId } from "../utils/localStorage";
-
+import { removeBookId, saveBookIds } from "../utils/localStorage";
 import { useQuery, useMutation } from "@apollo/client";
 
 import { GET_ME } from "../utils/queries";
@@ -17,10 +16,12 @@ import { REMOVE_BOOK } from "../utils/mutations";
 
 const SavedBooks = () => {
   const { loading, data } = useQuery(GET_ME);
+  const userData = data?.getMe || {};
+
   const [deleteBook, { error }] = useMutation(REMOVE_BOOK);
 
-  const userData = data?.me || {};
-
+  
+// console.log(userData.savedBooks.map(book => book.title))
   const handleDeleteBook = async (bookId) => {
     const token = Auth.loggedIn() ? Auth.getToken() : null;
 
@@ -39,11 +40,6 @@ const SavedBooks = () => {
     }
   };
 
-  // if data isn't here yet, say so
-  if (!loading) {
-    return <h2>LOADING...</h2>;
-  }
-
   return (
     <>
       <Jumbotron fluid className="text-light bg-dark">
@@ -53,14 +49,14 @@ const SavedBooks = () => {
       </Jumbotron>
       <Container>
         <h2>
-          {userData.savedBooks.length
+          {userData.savedBooks?.length
             ? `Viewing ${userData.savedBooks.length} saved ${
                 userData.savedBooks.length === 1 ? "book" : "books"
               }:`
             : "You have no saved books!"}
-        </h2>
-        <CardColumns>
-          {userData.savedBooks.map((book) => {
+        </h2> 
+         <CardColumns>
+          {userData.savedBooks?.map((book) => {
             return (
               <Card key={book.bookId} border="dark">
                 {book.image ? (
