@@ -1,12 +1,13 @@
 # Book Search
 
 ## Description 
-    
+
+Book search website, utilizing google book search API;
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 <h3>Deployed app:</h3>
-<a href="https://tranquil-refuge-78917.herokuapp.com/" target="_blank">Click Me!</a>
+<a href="https://rocky-reaches-49649.herokuapp.com/" target="_blank">Click Me!</a>
     
 ## Table of Contents
 - [Installation](#installation)
